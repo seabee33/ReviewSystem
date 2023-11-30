@@ -1,0 +1,239 @@
+<!-- <?php
+session_start();
+if(!isset($_SESSION["loggedIn"])){
+	header("Location: /review/login.php");
+	exit();
+}
+
+?>-->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Review Dashboard</title>
+	<link rel="stylesheet" href="reviewStyles.css">
+</head>
+<body>
+
+<div class="reTopBanner2">
+	<img class="reBannerLogo" src="../assets/img/golden-eggs-logo.png">
+	<div class="reBannerRight reBannerText">
+	<?php
+	if(isset($_SESSION["loggedIn"])){
+		if($_SESSION["loggedIn"] == TRUE){
+			$account_id = $_SESSION['account_id'];
+			$accountName = $_SESSION["account_name"];
+			
+			echo "Welcome, $accountName <a class='logOutButton' href='logout.php'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Log Out</a>";
+		}
+	}
+	?>
+	</div> 
+</div>
+
+
+<br><br><br><br>
+
+
+<div class="alertBox" id='alertBox'></div>
+
+<form class="reContent" id='sendReviewForm'>
+	<p class="reParagraph">Send email to client to request review</p>
+	<br><br>
+	<input class="reInput" type="text" id='clientName' placeholder='Client Name'>
+	<br><br>
+	<input class="reInput" type="text" id='clientEmail' placeholder='Client Email'>
+	<br><br>
+	<input type="hidden" value='<?php echo $_SESSION['account_id']; ?>' id='accountName'>
+	<button class="reButton" type='submit'> Send Review Request </button>
+</form>
+<br><br><br><br>
+
+<div class="reContent">
+<p class="reParagraph">Reviews requests sent:</p>
+<table class="reTable">
+	<tr>
+		<th>Sent by agent name</th>
+		<th>Sent to client name</th>
+		<th>Email sent to</th>
+		<th>Sent On Date</th>
+	</tr>
+<!-- <?php
+	require("db.php");
+	$pendingReviewTableSQL = "SELECT stu.email, stu.name, stu.date_sent, u.account_name FROM sent_to_user stu JOIN users u ON stu.sent_by_agent_id = u.id ORDER BY stu.date_sent ASC";
+	$pendingReviewTableSTMT = $conn->prepare($pendingReviewTableSQL);
+	if($pendingReviewTableSTMT->execute()){
+		
+		$tableData = $pendingReviewTableSTMT->get_result();
+
+		while($rowData = $tableData->fetch_assoc()){
+			$clientName = $rowData['name'];
+			$sentByAgent = $rowData['account_name'];
+			$clientEmail = $rowData['email'];
+			$dateSent = $rowData['date_sent'];
+				
+			echo "
+			<tr>
+				<td>$sentByAgent</td>
+				<td>$clientName</td>
+				<td>$clientEmail</td>
+				<td>$dateSent</td>
+			</tr>
+			";
+		}
+
+		// Close the statement only if it was successfully created and executed
+		if ($pendingReviewTableSTMT) {
+			$pendingReviewTableSTMT->close();
+		}
+	}
+
+?> -->
+</table>
+</div>
+
+<br><br><br><br>
+
+<div class="reContent">
+	<p class="reParagraph">Reviews to approve or delete:</p>
+<table class="reTable">
+	<tr>
+		<th>For agent name</th>
+		<th>From client name</th>
+		<th>Email from</th>
+		<th>Review received on date</th>
+		<th>Review</th>
+		<th>Review action</th>
+	</tr>
+<!-- <?php
+
+	$approvalReviewTableSQL = "SELECT rfr.id, u.account_name, rfr.review_by_name, rfr.review_by_email, rfr.review_creation_date, rfr.review_body FROM reviews_for_review rfr JOIN users u ON u.id=rfr.agent_id_sent_by ORDER BY rfr.review_creation_date ASC";
+	$approvalReviewTableSTMT = $conn->prepare($approvalReviewTableSQL);
+	if($approvalReviewTableSTMT->execute()){
+		
+		$tableDataToApprove = $approvalReviewTableSTMT->get_result();
+
+		while($rowDataToApprove = $tableDataToApprove->fetch_assoc()){
+			$clientEmailToApprove = $rowDataToApprove['review_by_email'];
+			$clientNameToApprove = $rowDataToApprove['review_by_name'];
+			$dateSubmittedToApprove = $rowDataToApprove['review_creation_date'];
+			$sentByAgentToApprove = $rowDataToApprove['account_name'];
+			$reviewBody = $rowDataToApprove['review_body'];
+			$pendingReviewID = $rowDataToApprove['id'];
+	
+			echo "
+			<tr>
+				<td>$sentByAgentToApprove</td>
+				<td>$clientNameToApprove</td>
+				<td>$clientEmailToApprove</td>
+				<td>$dateSubmittedToApprove</td>
+				<td>$reviewBody</td>
+				<td> <a href='/review/appProcessor.php?action=approveOrDeleteReview&reviewAction=approve&DBID=$pendingReviewID' onclick=\"return confirm('Click OK to approve and publish the review by $clientNameToApprove, click cancel to do nothing')\">Approve</a> / <a href='/review/appProcessor.php?action=approveOrDeleteReview&reviewAction=delete&DBID=$pendingReviewID' onclick=\"return confirm('Click OK to DELETE the review by $clientNameToApprove, click cancel to do nothing')\">Delete</a> </td>
+			</tr>
+			";
+		}
+
+		// Close the statement only if it was successfully created and executed
+		if ($approvalReviewTableSTMT) {
+			$approvalReviewTableSTMT->close();
+		}
+	}
+
+?> -->
+</table class="reTable">
+</div>
+
+<br><br><br><br>
+
+<div class="reContent">
+	<p class="reParagraph">Published reviews:</p>
+<table class="reTable">
+	<tr>
+		<th>For agent name</th>
+		<th>From client name</th>
+		<th>Review created on date</th>
+		<th>Review approved by agent name</th>
+		<th>Review</th>
+	</tr>
+<!-- <?php
+
+	$approvedReviewsTableSQL = "SELECT 
+    u.account_name AS review_approved_by_agent, 
+    u2.account_name AS review_for_agent_name, 
+    ar.review_creation_date, 
+    ar.review_body, 
+    ar.review_by_name 
+	FROM approved_reviews ar
+	LEFT JOIN users u ON ar.review_approved_by_agent_id = u.id
+	LEFT JOIN users u2 ON ar.review_for_agent = u2.id
+	ORDER BY ar.review_creation_date ASC";
+
+	$approvedReviewsTableSTMT = $conn->prepare($approvedReviewsTableSQL);
+	if($approvedReviewsTableSTMT->execute()){
+		
+		$tableDataApprovedReviews = $approvedReviewsTableSTMT->get_result();
+
+		while($rowDataApprovedReviews = $tableDataApprovedReviews->fetch_assoc()){
+			$forAgentNameApprovedReviews = $rowDataApprovedReviews['review_for_agent_name'];
+			$fromClientNameApprovedReviews = $rowDataApprovedReviews['review_by_name'];
+			$reviewCreationDateApprovedReviews = $rowDataApprovedReviews['review_creation_date'];
+			$approvedByAgentNameApprovedReviews = $rowDataApprovedReviews['review_approved_by_agent'];
+			$reviewBody = $rowDataApprovedReviews['review_body'];
+	
+			echo "
+			<tr>
+				<td>$forAgentNameApprovedReviews</td>
+				<td>$fromClientNameApprovedReviews</td>
+				<td>$reviewCreationDateApprovedReviews</td>
+				<td>$approvedByAgentNameApprovedReviews</td>
+				<td>$reviewBody</td>
+			</tr>
+			";
+		}
+
+		// Close the statement only if it was successfully created and executed
+		if ($approvedReviewsTableSTMT) {
+			$approvedReviewsTableSTMT->close();
+		}
+	}
+
+?> -->
+</table>
+</div>
+
+<br><br><br><br><br><br><br><br>
+
+<div class="reBottomBanner"></div>
+
+</body>
+
+<script src="jqmin.js"></script>
+<script>
+	$(document).ready(function(){
+	$("#sendReviewForm").submit(function(event){
+		event.preventDefault();
+
+		// Get entered data
+		var clientNameInput = $("#clientName").val();
+		var clientEmailInput = $("#clientEmail").val();
+		var agentAccountNameInput = $("#accountName").val();
+
+		//AJAX request to process
+		$.ajax({
+			url:"appProcessor.php",
+			method:"POST",
+			data:{action:"sendReviewRequest", clientNameInput:clientNameInput, clientEmailInput:clientEmailInput, agentAccountNameInput:agentAccountNameInput},
+			success: function(response){
+				// console.log(response);
+				$("#alertBox").html(response.message);
+			},
+			error: function(){
+				// console.log("AJAX Error");
+				$("#alertBox").html(response.message);
+			}
+		})
+	})
+})
+</script>
+
+</html>

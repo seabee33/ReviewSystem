@@ -1,0 +1,153 @@
+*{
+	margin:0px;
+	padding:0px;
+	box-sizing: border-box;
+	/* font-family: sans-serif; */
+}
+@font-face {
+	font-family: gb;
+	src: url(Rubik-Light.ttf);
+}
+@font-face {
+	font-family: gbb;
+	src: url(Rubik-Bold.ttf);
+}
+
+.reContent{
+	margin: 0px 50px 0px 50px;
+}
+.reParagraph{
+	font-family: gb;
+	font-size: 20px;
+	color: #202C39;
+	line-height: 38px;
+}
+.reInput{
+	font-family: gb;
+	font-size: 16px;
+	color: #202C39;
+	border-radius: 5px;
+	line-height: 38px;
+	padding: 0px 15px 0px 15px;
+}
+.reButton{
+	font-family: gbb;
+	font-size: 16px;
+	color: #202C39;
+	line-height: 38px;
+	padding: 0px 15px 0px 15px;
+	border: 3px solid var(--gunmetal);
+	border-radius: 5px;
+}
+
+:root{
+	--gold1: #D5B65A;
+	--gunmetal: #202C39;
+}
+
+.reFlex{
+	display: relative;
+}
+
+.reLogoDiv{
+	margin: 0px auto;
+	width: 200px;
+}
+.reLogoDiv img {
+	width: 200px;
+}
+
+.reCenter{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+.reviewLoginForm input{
+	padding:10px;
+	border-radius: 20px;
+	border: 1px solid grey;
+}
+
+.reviewLoginForm button{
+	padding:10px 15px;
+	border-radius: 20px;
+	border: 1px solid grey;
+}
+
+#registerAlertHolder{
+	color:red;
+}
+
+.reTopBanner{
+	position: fixed;
+	background-color: var(--gunmetal);
+	height: 100px;
+	width: 100%;
+	border-bottom: 10px solid var(--gold1); 
+}
+.reBannerLogo{
+	height: 75%;
+	margin: 10px;
+}
+.reTopBanner2{
+	display: flex;
+	justify-content: space-between;
+	background-color: var(--gunmetal);
+	height: 100px;
+	width: 100%;
+	border-bottom: 10px solid var(--gold1); 
+	color: var(--gold1);
+	font-family: gbb;
+	font-size: 20px;
+
+}
+.reBannerRight{
+	margin: auto 20px auto 20px;
+}
+.reBottomBanner{
+	position: fixed;
+	background-color: var(--gunmetal);
+	height: 100px;
+	width: 100%;
+	border-top: 10px solid var(--gold1); 
+	bottom: 0px;
+}
+.reBottomBanner2{
+	position: flex;
+	background-color: var(--gunmetal);
+	height: 100px;
+	width: 100%;
+	border-top: 10px solid var(--gold1); 
+	bottom: 0px;
+}
+
+
+.reWhite{
+	color:white;
+}
+
+.reTable, .reTable th{
+	border: 1px solid black;
+	border-collapse: collapse;
+	padding:5px;
+}
+
+.logOutButton{
+	border: 1px solid var(--gold1);
+	border-radius: 2px;
+	font-size: 20px;
+	background-color: var(--gold1);
+	color: var(--gunmetal);
+	padding: 10px 20px 10px 20px;
+	text-decoration: none;
+}
+.logOutButton:hover{
+background-color: var(--gunmetal);
+color: var(--gold1);
+}
+
+.reSLink{
+	color:white;
+}
